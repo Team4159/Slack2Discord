@@ -29,7 +29,14 @@ discord_client.login(DISCORD_TOKEN);
 slackEvents.on('message',  (async function(message) {
         if (message.type == "message")
         {
-			var name = await getName(message.user);
+			var name;
+			await (getUser(message.user)).then((nameling) => {
+				name = nameling.user.real_name;
+			}).catch((error) => {
+				name = nameling.user.name;
+			}).catch((error) => {
+				name = "Deleted User";
+			})
 			var pfp;
 			await (getUser(message.user)).then((pfpling) => {
 				pfp = pfpling.user.profile.image_72;
@@ -60,18 +67,25 @@ slackEvents.on('message',  (async function(message) {
 			console.log("Connected to channel " + discord_channel.name + ' (' + discord_channel.id + ')');
 			//length of the mention string including special characters
 			const mentionLength = 12;
-			var messagetest
+			var messagetest = "";
+			var lastmention = 0;
 			for(var t = 0; t < message.text.length - 12; t++){
-				messagetest = "";
-				var lastmention = 0;
 				if(t + 12 <= message.text.length && message.text.substring(t, t + 2) == "<@" && message.text.substring(t + 11, t + 12) == ">"){
-					messagetest += (message.text.substring(lastmention, t) + "@" + "name here"); 
+					var mentionname;
+					await (getUser(message.text.substring(t + 2, t + 11))).then((nameling) => {
+						mentionname = nameling.user.real_name;
+					}).catch((error) => {
+						mentionname = nameling.user.name;
+					}).catch((error) => {
+						mentionname = "Deleted User";
+					})
+					messagetest += (message.text.substring(lastmention, t) + "@" + mentionname); 
 					lastmention = t;
 					console.log(message.text.substring(t + 2, t + 11));
 				}
-				console.log(messagetest);
 
-			}
+			} 
+			messagetest += message.text.substring(lastmention + mentionLength, message.text.length);
 			//send message
 			var textEmbed = new Discord.RichEmbed()
 				.setAuthor(name, pfp)
@@ -145,7 +159,7 @@ slackEvents.on('message',  (async function(message) {
 }));
 
 async function getName(id){
-	(getUser(id)).then((nameling) => {
+	await (getUser(id)).then((nameling) => {
 		return nameling.user.real_name;
 	}).catch((error) => {
 		return nameling.user.name;
