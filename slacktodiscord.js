@@ -71,8 +71,8 @@ slackEvents.on('message',  (async function(message) {
 				var messagetest = "";
 				var lastmention = 0;
 				if(t + 12 <= message.text.length && message.text.substring(t, t + 2) == "<@" && message.text.substring(t + 11, t + 12) == ">"){
-					message += (message.text.substring(lastmention, i) + "@" + "name here"); 
-					lastmention = i;
+					message += (message.text.substring(lastmention, t) + "@" + "name here"); 
+					lastmention = t;
 					console.log(message.text.substring(t + 2, t + 11));
 				}
 
