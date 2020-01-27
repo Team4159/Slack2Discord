@@ -60,8 +60,9 @@ slackEvents.on('message',  (async function(message) {
 			console.log("Connected to channel " + discord_channel.name + ' (' + discord_channel.id + ')');
 			//length of the mention string including special characters
 			const mentionLength = 12;
+			var messagetest
 			for(var t = 0; t < message.text.length - 12; t++){
-				var messagetest = "";
+				messagetest = "";
 				var lastmention = 0;
 				if(t + 12 <= message.text.length && message.text.substring(t, t + 2) == "<@" && message.text.substring(t + 11, t + 12) == ">"){
 					messagetest += (message.text.substring(lastmention, t) + "@" + "name here"); 
@@ -144,7 +145,7 @@ slackEvents.on('message',  (async function(message) {
 }));
 
 async function getName(id){
-	await (getUser(id)).then((nameling) => {
+	(getUser(id)).then((nameling) => {
 		return nameling.user.real_name;
 	}).catch((error) => {
 		return nameling.user.name;
