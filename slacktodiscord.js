@@ -67,9 +67,9 @@ slackEvents.on('message',  (async function(message) {
 			console.log("Connected to channel " + discord_channel.name + ' (' + discord_channel.id + ')');
 			//length of the mention string including special characters
 			const mentionLength = 12;
-			for(int i = 0; i < message.text.length - 12; i++){
-				if(i + 12 <= message.text.length && message.substring(i, i + 2) == "<@" && message.substring(i + 11, i + 12) == ">")
-					console.log(message.substring(i + 2, i + 11);
+			for(var t = 0; t < message.text.length - 12; t++){
+				if(t + 12 <= message.text.length && message.substring(t, t + 2) == "<@" && message.substring(t + 11, t + 12) == ">")
+					console.log(message.substring(t + 2, t + 11);
 			}
 			//send message
 			var textEmbed = new Discord.RichEmbed()
