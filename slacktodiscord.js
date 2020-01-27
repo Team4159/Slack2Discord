@@ -65,10 +65,16 @@ slackEvents.on('message',  (async function(message) {
 				console.log("Defaulting to first one found");
 			}
 			console.log("Connected to channel " + discord_channel.name + ' (' + discord_channel.id + ')');
+			//length of the mention string including special characters
+			const mentionLength = 12;
+			for(int i = 0; i < message.text.length - 12; i++){
+				if(i + 12 <= message.text.length && message.substring(i, i + 2) == "<@" && message.substring(i + 11, i + 12) == ">")
+					console.log(message.substring(i + 2, i + 11);
+			}
 			//send message
 			var textEmbed = new Discord.RichEmbed()
 				.setAuthor(name, pfp)
-				.setDescription(message.text.replace(/<@(.*)>/, "@" + name));
+				.setDescription(message.text);
 			try {
 				await discord_channel.send(textEmbed);
 			}
