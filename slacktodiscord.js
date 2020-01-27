@@ -69,7 +69,7 @@ slackEvents.on('message',  (async function(message) {
 			const mentionLength = 12;
 			for(var t = 0; t < message.text.length - 12; t++){
 				if(t + 12 <= message.text.length && message.substring(t, t + 2) == "<@" && message.substring(t + 11, t + 12) == ">")
-					console.log(message.substring(t + 2, t + 11);
+					console.log(message.substring(t + 2, t + 11));
 			}
 			//send message
 			var textEmbed = new Discord.RichEmbed()
