@@ -29,14 +29,7 @@ discord_client.login(DISCORD_TOKEN);
 slackEvents.on('message',  (async function(message) {
         if (message.type == "message")
         {
-			var name;
-			await (getUser(message.user)).then((nameling) => {
-				name = nameling.user.real_name;
-			}).catch((error) => {
-				name = nameling.user.name;
-			}).catch((error) => {
-				name = "Deleted User";
-			})
+			var name = await getName(message.user);
 			var pfp;
 			await (getUser(message.user)).then((pfpling) => {
 				pfp = pfpling.user.profile.image_72;
@@ -75,6 +68,7 @@ slackEvents.on('message',  (async function(message) {
 					lastmention = t;
 					console.log(message.text.substring(t + 2, t + 11));
 				}
+				console.log(messagetest);
 
 			}
 			//send message
@@ -148,6 +142,16 @@ slackEvents.on('message',  (async function(message) {
 
 		}
 }));
+
+async function getName(id){
+	await (getUser(id)).then((nameling) => {
+		return nameling.user.real_name;
+	}).catch((error) => {
+		return nameling.user.name;
+	}).catch((error) => {
+		return "Deleted User";
+	})
+}
 
 async function getUser(id){
 	const ling = await web.users.info({
