@@ -68,7 +68,7 @@ slackEvents.on('message',  (async function(message) {
 			//length of the mention string including special characters
 			const mentionLength = 12;
 			var messagetest = "";
-			var lastmention = 0;
+			var lastmention = -mentionLength;
 			for(var t = 0; t <= message.text.length - mentionLength; t++){
 				if(t + 12 <= message.text.length && message.text.substring(t, t + 2) == "<@" && message.text.substring(t + mentionLength - 1, t + mentionLength) == ">"){
 					var mentionname;
@@ -79,8 +79,7 @@ slackEvents.on('message',  (async function(message) {
 					}).catch((error) => {
 						mentionname = "Deleted User";
 					})
-					messagetest += (message.text.substring(lastmention, t) + "@" + mentionname + " "); 
-					t += mentionLength;
+					messagetest += (message.text.substring(lastmention  + mentionLength, t) + "@" + mentionname + " "); 
 					lastmention = t;
 					//console.log(message.text.substring(t + 2, t + mentionLength - 1));
 				}
