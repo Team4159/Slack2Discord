@@ -10,17 +10,14 @@
   "author": "Team 4159",
   "license": "BSD",
   "dependencies": {
-    "@discordjs/uws": "^10.149.0",
-    "@slack/events-api": "^2.3.1",
-    "@slack/web-api": "^5.7.0",
+    "@slack/events-api": "^2.3.2",
+    "@slack/web-api": "^5.8.0",
     "bufferutil": "^4.0.1",
     "del": "^5.1.0",
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.2.0",
     "file-extension": "^4.0.5",
     "fs": "0.0.1-security",
-    "https": "^1.0.0",
-    "request": "^2.88.0",
-    "slackbots": "^1.1.0",
-    "uws": "^9.148.0"
+    "request": "^2.88.2",
+    "slackbots": "^1.2.0"
   }
 }

@@ -47,18 +47,18 @@ slackEvents.on('message',  (async function(message) {
 			//connect to channel
 			var channel = (await getChannel(message.channel)).channel.name;
 			var param = "name"
-			var potential_channels = discord_client.channels.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text');
+			var potential_channels = discord_client.channels.cache.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text');
 			console.log("Found " + potential_channels.size + " channels with name " + channel);
 			if (potential_channels.size === 0) {
 				console.log("Error: No Discord channels with " + param + " " + channel + " found.");
 				var server = await discord_client.guilds.get('670486240918765585');
 				await server.createChannel(channel, "text");
-				var newChannel = await discord_client.channels.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').get(discord_client.channels.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').keys().next().value);
+				var newChannel = await discord_client.channels.cache.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').get(discord_client.cache.channels.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').keys().next().value);
 				await newChannel.setParent('670713927465697283');
 				discord_channel = newChannel;
 				console.log("Created channel " + channel);
 			} else {
-				discord_channel = await potential_channels.get(discord_client.channels.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').keys().next().value);
+				discord_channel = await potential_channels.get(discord_client.channels.cache.filter(test2 => test2.name == channel).filter(test3 => test3.type == 'text').keys().next().value);
 			}
 			if (potential_channels.size > 1) {
 				console.log("Warning: More than 1 Discord channel with " + param + " " + channel + " found.");
@@ -87,7 +87,7 @@ slackEvents.on('message',  (async function(message) {
 			} 
 			messagetest += message.text.substring(lastmention + mentionLength, message.text.length);
 			//send message
-			var textEmbed = new Discord.RichEmbed()
+			var textEmbed = new Discord.MessageEmbed()
 				.setAuthor(name, pfp)
 				.setDescription(messagetest);
 			try {
@@ -113,7 +113,7 @@ slackEvents.on('message',  (async function(message) {
 
 					if(fileext == "mp4" || fileext == "mov")
 					{
-						var linkEmbed = new Discord.RichEmbed()
+						var linkEmbed = new Discord.MessageEmbed()
 							.setAuthor(name, pfp)
 							.setTitle(message.files[i].name)
 							.setURL(message.files[i].url_private);
@@ -125,26 +125,20 @@ slackEvents.on('message',  (async function(message) {
 								.on('finish', resolve));
 
 						//inline images
-						if(fileext == "png" || fileext == "jpg"){
-							const attachment = new Discord.Attachment('./files/' + message.files[i].name);
-							/*const imageEmbed = {
-								title: message.files[i].name,
-								image: {
-									url: 'attachment://' + './files/' + message.files[i].name,
-								},
-							};*/
-							var imageEmbed = new Discord.RichEmbed()
+						if(fileext == "png" || fileext == "jpg" || fileext == "gif"){
+
+							var imageEmbed = new Discord.MessageEmbed()
 									.setAuthor(name, pfp)
 									.setTitle(message.files[i].name)
-									.attachFile(attachment)
-      									.setImage('attachment://' + './files/' + message.files[i].name);
+									.attachFiles(['./files/' + message.files[i].name])
+									.setImage('attachment://' + message.files[i].name)
 							await discord_channel.send(imageEmbed);
 						} else {
 							try {
 								await discord_channel.send({files: ['./files/' + message.files[i].name]});
 							}
 							catch(error) {
-								var linkEmbed = new Discord.RichEmbed()
+								var linkEmbed = new Discord.MessageEmbed()
 									.setAuthor(name, pfp)
 									.setTitle(message.files[i].name)
 									.setURL(message.files[i].url_private);
